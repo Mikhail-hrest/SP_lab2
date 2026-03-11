@@ -359,7 +359,7 @@ static ssize_t blk_read(struct file *pfile, char __user *buf,
 
     kfree(buff);
     mutex_unlock(&d->lock);
-    return res;
+    return d->data_len;
 }
 
 static ssize_t blk_write(struct file *pfile, const char __user *buf, size_t len, loff_t *ppos)
