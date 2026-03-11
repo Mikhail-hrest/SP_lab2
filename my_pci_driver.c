@@ -741,12 +741,6 @@ static int blk_probe(struct pci_dev* pdev, const struct pci_device_id *id)
         return err;
     }
 
-    err = pcim_iomap_regions(pdev, BIT(BLK_BAR_NUM), DRV_NAME); // резервируют BAR PCI устройства и отображают его в адресное пространство ядра.
-    if (err)
-    {
-        return err;
-    }
-
     pci_set_master(pdev);                                       // разрешает PCI устройству самостоятельно инициировать операции на PCI шине.
 
     d = devm_kzalloc(&pdev->dev, sizeof(*d), GFP_KERNEL);       // выделяет память и привязывает к устройству pdev
