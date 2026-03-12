@@ -85,7 +85,7 @@ struct blk_block_capacity {
 
 uint64_t get_u64(const char* str)
 {
-    if (str == nullptr) return 0;
+    if (str == NULL) return 0;
     char* endptr = NULL;
     errno = 0;
     uint64_t val = strtoull(str, &endptr, 10);
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     int rw_fd; //файловый дескриптор для операций чтения и записи
     void *buf = NULL; //буфер для операций чтения и записи
 
-    if (!strncmp(argv[1], "info", sizeof(*argv[1])))
+    if (!strncmp(argv[2], "info", sizeof(*argv[2])))
     {
         uint64_t addr, storage_size, storage_base;
         uint32_t block_size, data_len, status;
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
             help();
         }
     }
-    if (!strncmp(argv[1], "set_addr", sizeof(*argv[1])))
+    if (!strncmp(argv[2], "set_addr", sizeof(*argv[2])))
     {
         val64 = get_u64(argv[3]);
         if(ioctl(descriptor, BLK_IOC_SET_ADDR, &val64) < 0)
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
             fail("fail in set addr");
         }
     }
-    else if(!strncmp(argv[1], "set_block", sizeof(*argv[1])))
+    else if(!strncmp(argv[2], "set_block", sizeof(*argv[2])))
     {
         val32 = (uint32_t) get_u64(argv[3]);
         if(ioctl(descriptor, BLK_IOC_SET_BLOCK_SIZE, &val32) < 0)
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
             fail("fail in set block size");
         }
     }
-    else if(!strncmp(argv[1], "set_len", sizeof(*argv[1])))
+    else if(!strncmp(argv[2], "set_len", sizeof(*argv[2])))
     {
         val32 = (uint32_t) get_u64(argv[3]);
         if(ioctl(descriptor, BLK_IOC_SET_DATA_LEN, &val32) < 0)
@@ -216,7 +216,7 @@ int main(int argc, char **argv)
             fail("fail in set data length");
         }
     }
-    else if(!strncmp(argv[1], "read", sizeof(*argv[1])))
+    else if(!strncmp(argv[2], "read", sizeof(*argv[2])))
     {
         if (ioctl(descriptor, BLK_IOC_GET_DATA_LEN, &len) < 0)
         {
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
         close(rw_fd);
         free(buf);
     }
-    else if(!strncmp(argv[1], "write", sizeof(*argv[1])))
+    else if(!strncmp(argv[2], "write", sizeof(*argv[2])))
     {
         struct stat st;
         if (ioctl(descriptor, BLK_IOC_GET_DATA_LEN, &len) < 0)
