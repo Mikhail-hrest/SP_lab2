@@ -83,6 +83,14 @@ struct blk_block_capacity {
 
 // то же что и в my_pci_driver.c
 
+int my_getlen(const char *str)
+{
+    int count = 0;
+    while (str && str[count] != '\0')
+        count++;
+    return count;
+}
+
 uint64_t get_u64(const char* str)
 {
     if (str == NULL) return 0;
@@ -100,7 +108,7 @@ uint64_t get_u64(const char* str)
 
 void help()
 {
-    fprintf(stderr, "\nHOW TO USE\n"
+    fprintf(stderr, "HOW TO USE"
                     "./blk_ioctl <device> info\n"
                     "./blk_ioctl <device> set_addr <value>\n"
                     "./blk_ioctl <device> set_block <1024|2048|4096|8192?>\n"
@@ -138,7 +146,7 @@ int main(int argc, char **argv)
     int rw_fd; //файловый дескриптор для операций чтения и записи
     void *buf = NULL; //буфер для операций чтения и записи
 
-    if (!strncmp(argv[2], "info", sizeof(*argv[2])))
+    if (!strncmp(argv[2], "info", my_getlen(argv[2])))
     {
         uint64_t addr, storage_size, storage_base;
         uint32_t block_size, data_len, status;
@@ -192,7 +200,7 @@ int main(int argc, char **argv)
             help();
         }
     }
-    if (!strncmp(argv[2], "set_addr", sizeof(*argv[2])))
+    if (!strncmp(argv[2], "set_addr", my_getlen(argv[2])))
     {
         val64 = get_u64(argv[3]);
         if(ioctl(descriptor, BLK_IOC_SET_ADDR, &val64) < 0)
@@ -200,7 +208,7 @@ int main(int argc, char **argv)
             fail("fail in set addr");
         }
     }
-    else if(!strncmp(argv[2], "set_block", sizeof(*argv[2])))
+    else if(!strncmp(argv[2], "set_block", my_getlen(argv[2])))
     {
         val32 = (uint32_t) get_u64(argv[3]);
         if(ioctl(descriptor, BLK_IOC_SET_BLOCK_SIZE, &val32) < 0)
@@ -208,7 +216,7 @@ int main(int argc, char **argv)
             fail("fail in set block size");
         }
     }
-    else if(!strncmp(argv[2], "set_len", sizeof(*argv[2])))
+    else if(!strncmp(argv[2], "set_len", my_getlen(argv[2])))
     {
         val32 = (uint32_t) get_u64(argv[3]);
         if(ioctl(descriptor, BLK_IOC_SET_DATA_LEN, &val32) < 0)
@@ -216,7 +224,7 @@ int main(int argc, char **argv)
             fail("fail in set data length");
         }
     }
-    else if(!strncmp(argv[2], "read", sizeof(*argv[2])))
+    else if(!strncmp(argv[2], "read", my_getlen(argv[2])))
     {
         if (ioctl(descriptor, BLK_IOC_GET_DATA_LEN, &len) < 0)
         {
@@ -245,7 +253,7 @@ int main(int argc, char **argv)
         close(rw_fd);
         free(buf);
     }
-    else if(!strncmp(argv[2], "write", sizeof(*argv[2])))
+    else if(!strncmp(argv[2], "write", my_getlen(argv[2])))
     {
         struct stat st;
         if (ioctl(descriptor, BLK_IOC_GET_DATA_LEN, &len) < 0)
