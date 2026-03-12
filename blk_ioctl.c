@@ -100,7 +100,7 @@ uint64_t get_u64(const char* str)
 
 void help()
 {
-    fprintf(stderr, "HOW TO USE"
+    fprintf(stderr, "\nHOW TO USE\n"
                     "./blk_ioctl <device> info\n"
                     "./blk_ioctl <device> set_addr <value>\n"
                     "./blk_ioctl <device> set_block <1024|2048|4096|8192?>\n"
